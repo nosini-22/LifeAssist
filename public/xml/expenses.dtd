@@ -1,0 +1,6 @@
+<!ELEMENT expenses (expense*)>
+<!ELEMENT expense (title, amount, category, date)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT amount (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT date (#PCDATA)>

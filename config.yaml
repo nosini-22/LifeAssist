@@ -1,0 +1,16 @@
+app:
+  name: LifeAssist
+  description: Smart Everyday Problem-Solving Platform
+  environment: development
+
+features:
+  expenses: true
+  tasks: true
+  goals: true
+  reminders: true
+  documents: true
+  xml_export: true
+  json_import_export: true
+
+database:
+  type: MongoDB

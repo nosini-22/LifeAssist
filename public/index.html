@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeAssist | Personal Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#overview">
+            <span class="brand-icon">✦</span>
+            <span>LifeAssist<small>Your day, organised</small></span>
+        </a>
+
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+                aria-label="Collapse sidebar">☰</button>
+
+        <p class="nav-heading">WORKSPACE</p>
+        <nav class="navigation" aria-label="Main navigation">
+            <button class="nav-item active" data-page="overview"><span>▦</span><b>Overview</b></button>
+            <button class="nav-item" data-page="expenses"><span>💳</span><b>Expenses</b></button>
+            <button class="nav-item" data-page="tasks"><span>✓</span><b>My Tasks</b></button>
+            <button class="nav-item" data-page="goals"><span>🎯</span><b>Goals &amp; Savings</b></button>
+            <button class="nav-item" data-page="reminders"><span>♧</span><b>Reminders</b></button>
+            <button class="nav-item" data-page="documents"><span>▤</span><b>Documents</b></button>
+            <button class="nav-item" data-page="tools"><span>✧</span><b>Everyday Tools</b></button>
+             <button class="nav-item" data-page="feedback"><span>✧</span><b>Feedback</b></button>
+        </nav>
+
+        <div class="sidebar-note">
+            <span class="note-icon">☀️</span>
+            <b>One step at a time</b>
+            <p>Small actions make a better day.</p>
+        </div>
+        <div class="sidebar-footer">LifeAssist · Personal workspace</div>
+    </aside>
+
+    <main class="main-content">
+       
+<header class="topbar">
+    <div class="topbar-heading">
+        <button
+            class="mobile-menu-button"
+            id="mobile-menu-button"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+        >☰</button>
+
+        <div>
+            <p class="eyebrow">YOUR PERSONAL SPACE</p>
+            <h1 id="page-title">Overview</h1>
+            <p class="page-subtitle" id="page-subtitle">A clearer view of your everyday life.</p>
+        </div>
+    </div>
+
+    <div class="topbar-date" id="today-label">Today</div>
+</header>
+
+
+        <section class="page active" id="page-overview">
+            <div class="welcome-banner">
+                <div>
+                    <span class="welcome-label">WELCOME TO LIFEASSIST</span>
+                    <h2>Make room for what matters. ✨</h2>
+                    <p>Organise your expenses, tasks, goals and daily plans in one place.</p>
+                </div>
+                <div class="welcome-art" aria-hidden="true">☁️ 🌈</div>
+            </div>
+
+            <div class="stats-grid">
+                <article class="stat-card stat-blue">
+                    <span class="stat-icon">💰</span><p>Total Expenses</p>
+                    <h2 id="stat-expenses">₹0.00</h2><small>Recorded expenses</small>
+                </article>
+                <article class="stat-card stat-green">
+                    <span class="stat-icon">✅</span><p>Tasks Completed</p>
+                    <h2 id="stat-tasks">0 / 0</h2><small>Your task progress</small>
+                </article>
+                <article class="stat-card stat-yellow">
+                    <span class="stat-icon">🎯</span><p>Savings Goals</p>
+                    <h2 id="stat-goals">0</h2><small>Goals created</small>
+                </article>
+                <article class="stat-card stat-pink">
+                    <span class="stat-icon">⏰</span><p>Reminders</p>
+                    <h2 id="stat-reminders">0</h2><small>Upcoming reminders</small>
+                </article>
+            </div>
+
+            <div class="content-grid">
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div><h3>Expense overview</h3><p>Your recent spending activity</p></div>
+                        <button class="text-button" data-go="expenses">View all →</button>
+                    </div>
+                    <div class="chart-wrap"><canvas id="expense-chart"></canvas></div>
+                </article>
+                <article class="panel">
+                    <div class="panel-heading"><div><h3>Quick actions</h3><p>Get things done faster</p></div></div>
+                    <div class="quick-actions">
+                        <button class="quick-action qa-blue" data-go="expenses"><span>💳</span><b>Add an expense</b><small>Track your spending</small></button>
+                        <button class="quick-action qa-green" data-go="tasks"><span>✓</span><b>Create a task</b><small>Plan your day</small></button>
+                        <button class="quick-action qa-purple" data-go="reminders"><span>⏰</span><b>Set a reminder</b><small>Remember what matters</small></button>
+                        <button class="quick-action qa-yellow" data-go="goals"><span>🎯</span><b>Set a savings goal</b><small>Plan for the future</small></button>
+                    </div>
+                </article>
+            </div>
+
+            <article class="panel">
+                <div class="panel-heading"><div><h3>Recent expenses</h3><p>Your latest entries from MongoDB</p></div>
+                    <button class="text-button" data-go="expenses">Manage expenses →</button>
+                </div>
+                <div id="recent-expenses" class="table-wrap"></div>
+            </article>
+        </section>
+
+        <section class="page" id="page-expenses">
+            <div class="section-intro intro-blue">
+                <span class="intro-icon">💳</span>
+                <div><h2>Expense tracker</h2><p>Record your spending and understand where your money goes.</p></div>
+            </div>
+
+            <div class="content-grid expense-layout">
+                <article class="panel">
+                    <div class="panel-heading"><div><h3>Add a new expense</h3><p>Fill in the details below.</p></div></div>
+
+                    <form id="expense-form" class="form-grid">
+                        <div class="field full-width">
+                            <label for="expense-title">Expense name</label>
+                            <input id="expense-title" name="title" type="text"
+       placeholder="e.g. Lunch, books, bus fare"
+       maxlength="100"
+       pattern=".*\S.*"
+       title="Enter an expense name containing at least one non-space character."
+       required>
+                        </div>
+
+                        <div class="field">
+                            <label for="expense-amount">Amount (₹)</label>
+                            <input id="expense-amount" name="amount" type="number"
+                                   min="0.01" step="0.01" placeholder="e.g. 250" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="expense-category">Category</label>
+                            <select id="expense-category" name="category" required>
+                                <option value="">Choose category</option>
+                                <option>Food</option>
+                                <option>Travel</option>
+                                <option>Shopping</option>
+                                <option>Education</option>
+                                <option>Health</option>
+                                <option>Bills</option>
+                                <option>Entertainment</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+
+                        <div class="field full-width">
+                            <label for="expense-date">Date</label>
+                            <input id="expense-date" name="date" type="date" required>
+                        </div>
+
+                        <div class="field full-width">
+                            <button class="primary-button add-expense-button" id="add-expense-button" type="submit">
+                                <span aria-hidden="true">＋</span> Add Expense
+                            </button>
+                        </div>
+                        <p id="expense-message" class="form-message full-width" role="status" aria-live="polite"></p>
+                    </form>
+                </article>
+
+                <article class="panel expense-total-panel">
+                    <span class="big-icon">💸</span>
+                    <p class="eyebrow">TOTAL RECORDED</p>
+                    <h2 id="expense-total">₹0.00</h2>
+                    <p>All expenses currently saved in your database.</p>
+                    <div class="total-divider"></div>
+                    <p class="total-label">Number of entries</p>
+                    <h3 id="expense-count">0</h3>
+                </article>
+            </div>
+
+            <article class="panel">
+                <div class="panel-heading"><div><h3>All expenses</h3><p>Your saved transaction history</p></div>
+                    <button class="secondary-button" id="refresh-expenses" type="button">↻ Refresh</button>
+
+<button class="secondary-button" id="export-json" type="button">
+    Export JSON
+</button>
+<input
+    type="file"
+    id="import-json-file"
+    accept=".json,application/json"
+    hidden
+>
+
+<button
+    class="secondary-button"
+    id="import-json"
+    type="button"
+>
+    Import JSON
+</button>
+<button
+    class="secondary-button"
+    id="export-xml"
+    type="button"
+>
+    Export XML
+</button>
+                </div>
+                <div id="expense-list" class="table-wrap"></div>
+            </article>
+        </section>
+
+        <section class="page" id="page-tasks">
+            <div class="section-intro intro-green"><span class="intro-icon">✓</span>
+                <div><h2>My tasks</h2><p>Break your plans into manageable steps.</p></div></div>
+            <article class="panel">
+                <form id="task-form" class="form-grid">
+                    <div class="field"><label for="task-name">Task name</label><input id="task-name" maxlength="120" placeholder="What do you need to do?" required></div>
+                    <div class="field"><label for="task-due">Due date</label><input id="task-due" type="date"></div>
+                    <div class="field"><label for="task-priority">Priority</label>
+                        <select id="task-priority"><option>Medium</option><option>High</option><option>Low</option></select></div>
+                    <div class="field submit-field"><label>&nbsp;</label><button class="primary-button" type="submit">＋ Add Task</button></div>
+                </form>
+            </article>
+            <div class="list-toolbar"><h3>Your task list</h3><span id="task-count-label">0 tasks</span></div>
+            <div id="task-list" class="item-list"></div>
+        </section>
+
+        <section class="page" id="page-goals">
+            <div class="section-intro intro-yellow"><span class="intro-icon">🎯</span>
+                <div><h2>Goals &amp; savings</h2><p>Give your goals a name, a target and a plan.</p></div></div>
+            <article class="panel">
+                <form id="goal-form" class="form-grid">
+                    <div class="field"><label for="goal-name">Goal name</label><input id="goal-name" maxlength="100" placeholder="e.g. New laptop" required></div>
+                    <div class="field"><label for="goal-target">Target amount (₹)</label><input id="goal-target" type="number" min="1" step="0.01" placeholder="e.g. 50000" required></div>
+                    <div class="field"><label for="goal-saved">Already saved (₹)</label><input id="goal-saved" type="number" min="0" step="0.01" value="0" required></div>
+                    <div class="field"><label for="goal-date">Target date</label><input id="goal-date" type="date"></div>
+                    <div class="field full-width"><button class="primary-button" type="submit">＋ Create Goal</button></div>
+                </form>
+            </article>
+            <div id="goal-list" class="item-grid"></div>
+        </section>
+
+        <section class="page" id="page-reminders">
+            <div class="section-intro intro-purple"><span class="intro-icon">⏰</span>
+                <div><h2>Reminders</h2><p>Keep important dates and plans in sight.</p></div></div>
+            <article class="panel">
+                <form id="reminder-form" class="form-grid">
+                    <div class="field"><label for="reminder-name">Reminder</label><input id="reminder-name" maxlength="120" placeholder="e.g. Submit assignment" required></div>
+                    <div class="field"><label for="reminder-date">Date</label><input id="reminder-date" type="date" required></div>
+                    <div class="field"><label for="reminder-time">Time</label><input id="reminder-time" type="time"></div>
+                    <div class="field submit-field"><label>&nbsp;</label><button class="primary-button" type="submit">＋ Add Reminder</button></div>
+                </form>
+            </article>
+            <div id="reminder-list" class="item-list"></div>
+            <p class="helper-note">Reminders are saved in this browser. Notifications appear only while this page is open.</p>
+        </section>
+
+        <section class="page" id="page-documents">
+            <div class="section-intro intro-peach"><span class="intro-icon">▤</span>
+                <div><h2>Document checklist</h2><p>Keep track of the documents you need.</p></div></div>
+            <article class="panel">
+                <form id="document-form" class="inline-form">
+                    <div class="field"><label for="document-name">Document name</label><input id="document-name" maxlength="120" placeholder="e.g. College ID, transcript" required></div>
+                    <button class="primary-button" type="submit">＋ Add Document</button>
+                </form>
+            </article>
+            <div id="document-list" class="item-list"></div>
+        </section>
+
+        <section class="page" id="page-tools">
+            <div class="section-intro intro-blue"><span class="intro-icon">✧</span>
+                <div><h2>Everyday tools</h2><p>Simple calculators for everyday planning.</p></div></div>
+            <div class="tool-grid">
+                <article class="panel tool-card"><span class="tool-icon">🧾</span><h3>Bill splitter</h3><p>Split a shared bill equally.</p>
+                    <form id="split-form" class="tool-form">
+                        <div class="field"><label for="bill-total">Total bill (₹)</label><input id="bill-total" type="number" min="0" step="0.01" required placeholder="e.g. 1200"></div>
+                        <div class="field"><label for="bill-people">Number of people</label><input id="bill-people" type="number" min="1" max="1000" step="1" required value="2"></div>
+                        <button class="primary-button" type="submit">Split Bill</button>
+                    </form><p id="split-result" class="result-text" aria-live="polite"></p>
+                </article>
+                <article class="panel tool-card"><span class="tool-icon">🐷</span><h3>Savings calculator</h3><p>Estimate how long it may take to reach your goal.</p>
+                    <form id="savings-form" class="tool-form">
+                        <div class="field"><label for="saving-target">Target amount (₹)</label><input id="saving-target" type="number" min="0.01" step="0.01" required placeholder="e.g. 10000"></div>
+                        <div class="field"><label for="saving-current">Already saved (₹)</label><input id="saving-current" type="number" min="0" step="0.01" required value="0"></div>
+                        <div class="field"><label for="saving-monthly">Monthly savings (₹)</label><input id="saving-monthly" type="number" min="0.01" step="0.01" required placeholder="e.g. 1000"></div>
+                        <button class="primary-button" type="submit">Calculate</button>
+                    </form><p id="savings-result" class="result-text" aria-live="polite"></p>
+                </article>
+                <article class="panel tool-card"><span class="tool-icon">📅</span><h3>Date calculator</h3><p>Find the number of days between two dates.</p>
+                    <form id="date-form" class="tool-form">
+                        <div class="field"><label for="date-start">Start date</label><input id="date-start" type="date" required></div>
+                        <div class="field"><label for="date-end">End date</label><input id="date-end" type="date" required></div>
+                        <button class="primary-button" type="submit">Calculate Days</button>
+                    </form><p id="date-result" class="result-text" aria-live="polite"></p>
+                </article>
+            </div>
+        </section>
+        <!-- Feedback Page -->
+<section class="page" id="page-feedback">
+
+    <div class="section-intro intro-purple">
+        <span class="intro-icon">💬</span>
+        <div>
+            <h2>Feedback</h2>
+            <p>Share your experience and help us improve LifeAssist.</p>
+        </div>
+    </div>
+
+    <article class="panel">
+        <div class="panel-heading">
+            <div>
+                <h3>We value your feedback!</h3>
+                <p>Tell us what you think about LifeAssist.</p>
+            </div>
+        </div>
+
+        <form id="feedback-form" class="form-grid">
+
+            <div class="field">
+                <label for="feedback-name">Name</label>
+                <input
+                    type="text"
+                    id="feedback-name"
+                    name="name"
+                    maxlength="100"
+                    placeholder="Enter your name"
+                    required>
+            </div>
+
+            <div class="field">
+                <label for="feedback-email">Email</label>
+                <input
+                    type="email"
+                    id="feedback-email"
+                    name="email"
+                    maxlength="150"
+                    placeholder="Enter your email"
+                    required>
+            </div>
+
+            <div class="field full-width">
+                <label for="feedback-rating">Rating</label>
+                <select id="feedback-rating" name="rating" required>
+                    <option value="">Select your rating</option>
+                    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                    <option value="4">⭐⭐⭐⭐ Very Good</option>
+                    <option value="3">⭐⭐⭐ Good</option>
+                    <option value="2">⭐⭐ Needs Improvement</option>
+                    <option value="1">⭐ Poor</option>
+                </select>
+            </div>
+
+            <div class="field full-width">
+                <label for="feedback-message">Your Feedback</label>
+                <textarea
+                    id="feedback-message"
+                    name="feedback"
+                    rows="5"
+                    maxlength="1000"
+                    placeholder="Share your suggestions or experience..."
+                    required></textarea>
+            </div>
+
+            <div class="field full-width">
+                <button type="submit" class="primary-button">
+                    Submit Feedback
+                </button>
+            </div>
+
+            <p id="feedback-status"
+               class="form-message full-width"
+               role="status"
+               aria-live="polite"></p>
+
+        </form>
+    </article>
+
+</section>
+        <footer class="app-footer">Made for a more organised everyday life 💙</footer>
+    </main>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

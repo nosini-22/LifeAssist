@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<expenses>
+    <expense>
+        <title>Groceries</title>
+        <amount>500</amount>
+        <category>Food</category>
+        <date>2026-10-19</date>
+    </expense>
+</expenses>

@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeAssist - HTTP Methods Demo</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5ff;
+            padding: 25px;
+        }
+        main {
+            max-width: 650px;
+            margin: auto;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 16px;
+            background: #536dfe;
+            color: white;
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        pre {
+            background: #eef2ff;
+            padding: 15px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>LifeAssist HTTP Methods</h1>
+    <p>Test GET, POST, PUT and DELETE requests.</p>
+
+    <button onclick="sendRequest('GET')">GET</button>
+    <button onclick="sendRequest('POST')">POST</button>
+    <button onclick="sendRequest('PUT')">PUT</button>
+    <button onclick="sendRequest('DELETE')">DELETE</button>
+
+    <h3>Server Response</h3>
+    <pre id="output">Click a button to begin.</pre>
+</main>
+
+<script>
+function sendRequest(method) {
+    const data = {
+        message: "LifeAssist updated using " + method
+    };
+
+    $.ajax({
+        url: "/api/http-demo",
+        method: method,
+        contentType: "application/json",
+        data: ["POST", "PUT"].includes(method)
+            ? JSON.stringify(data)
+            : undefined,
+
+        success: function(response, textStatus, xhr) {
+            $("#output").text(
+                "HTTP Method: " + method +
+                "\nStatus Code: " + xhr.status +
+                "\nResponse: " +
+                (response ? JSON.stringify(response, null, 2)
+                          : "Resource deleted successfully.")
+            );
+        },
+
+        error: function(xhr) {
+            $("#output").text(
+                "HTTP Method: " + method +
+                "\nStatus Code: " + xhr.status +
+                "\nResponse: " + xhr.responseText
+            );
+        }
+    });
+}
+</script>
+</body>
+</html>
